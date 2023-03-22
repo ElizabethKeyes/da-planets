@@ -3,6 +3,7 @@ const Schema = mongoose.Schema
 
 export const SpeciesSchema = new Schema(
   {
-    name: { type: String, required: true, minLength: 1, maxLength: 50 }
+    name: { type: String, required: true, minLength: 1, maxLength: 50 },
+    colonyId: { type: Schema.Types.ObjectId, required: true }
   }
 )

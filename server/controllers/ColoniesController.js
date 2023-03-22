@@ -1,4 +1,6 @@
 import { coloniesService } from "../services/ColoniesService.js";
+import { planetsService } from "../services/PlanetsService.js";
+import { speciesService } from "../services/SpeciesService.js";
 import BaseController from "../utils/BaseController.js";
 
 
@@ -7,6 +9,9 @@ export class ColoniesController extends BaseController {
     super('/api/colonies')
     this.router
       .get('', this.getAllColonies)
+      // .get('/:colonyId/planets', this.getPlanetsOccupiedByColony)
+      .get('/:colonyId/species', this.getSpeciesByColony)
+      .get('/:colonyId', this.colonyById)
       .post('', this.createColony)
   }
 
@@ -14,6 +19,26 @@ export class ColoniesController extends BaseController {
     try {
       const colonies = await coloniesService.getAllColonies()
       res.send(colonies)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async getSpeciesByColony(req, res, next) {
+    try {
+      const colonyId = req.params.colonyId
+      const species = await speciesService.getSpeciesByColony(colonyId)
+      res.send(species)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async colonyById(req, res, next) {
+    try {
+      const colonyId = req.params.colonyId
+      const colony = await coloniesService.colonyById(colonyId)
+      res.send(colony)
     } catch (error) {
       next(error)
     }
@@ -29,3 +54,13 @@ export class ColoniesController extends BaseController {
     }
   }
 }
+
+  // async getPlanetsOccupiedByColony(req, res, next) {
+  //   try {
+  //     const colonyId = req.params.colonyId
+  //     const planets = await planetsService.getPlanetsOccupiedByColony(colonyId)
+  //     res.send(planets)
+  //   } catch (error) {
+  //     next(error)
+  //   }
+  // }

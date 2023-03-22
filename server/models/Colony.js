@@ -7,5 +7,13 @@ export const ColonySchema = new Schema(
     population: { type: Number, required: true },
     planetId: { type: Schema.Types.ObjectId, required: true, ref: 'Planet' },
     speciesId: { type: Schema.Types.ObjectId, required: true, ref: 'Species' }
-  }
+  },
+  { timestamps: true, toJSON: { virtuals: true } }
 )
+
+ColonySchema.virtual('Planet', {
+  localField: 'planetId',
+  foreignField: '_id',
+  justOne: true,
+  ref: 'Planet'
+})
